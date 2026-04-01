@@ -1,18 +1,12 @@
 from langchain_openai import ChatOpenAI
 
-llm = ChatOpenAI(model="gpt-5.4", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini")
 
 def supervisor_node(state):
     pergunta = state["pergunta"]
 
-    prompt = f"""
-    Classifique a pergunta como:
-    - tecnico
-    - executivo
+    resposta = llm.invoke(
+        f"Classifique como 'tecnico' ou 'executivo': {pergunta}"
+    )
 
-    Pergunta: {pergunta}
-    """
-
-    tipo = llm.invoke(prompt).content.lower()
-
-    return {"tipo": tipo}
+    return {"tipo": resposta.content.strip().lower()}
